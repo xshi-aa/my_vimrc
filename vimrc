@@ -27,6 +27,7 @@ Plugin 'vim-scripts/indentpython.vim'
 Plugin 'Valloric/YouCompleteMe'
 let g:ycm_autoclose_preview_window_after_completion=1
 nnoremap <leader>g : YcmCompleter GoTo<CR>
+nnoremap <leader>r : YcmCompleter GoToReferences<CR>
 
 " nerdtree
 Plugin 'scrooloose/nerdtree'
@@ -41,22 +42,27 @@ endfunc
 Plugin 'kien/ctrlp.vim'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPLastMode'
-let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
+"let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
+let g:ctrlp_extensions = ['buffertag', 'tag']
 
 " auto update tags
 Plugin 'craigemery/vim-autotag'
 
 " Powerline
 Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-"set guifont=PowerlineSymbols\ for\ Powerline
-set nocompatible
-set t_Co=256
-"let g:Powerline_symbols = 'fancy'
+"set guifont=Source\ Code\ Pro\ for\ Powerline
+let g:Powerline_symbols = 'fancy'
 set laststatus=2
 
-" Snipmate
-Plugin 'msanders/snipmate.vim'
-let g:snips_author = "Johnny Shi"
+" Snip
+"Track the engine.
+Plugin 'SirVer/ultisnips'
+" Snippets are separated from the engine. Add this if you want them:
+Plugin 'honza/vim-snippets'
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="/"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 
 " All of your Plugins must be added before the following line
@@ -112,17 +118,11 @@ set modeline
 "colorscheme evening
 
 " pathogen
-call pathogen#infect()
+"call pathogen#infect()
 
 
 " chinese
 set encoding=utf-8
-"set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
-"set langmenu=zh_CN.UTF-8
-"language message zh_CN.UTF-8
-"set guifont=NSimSun:h8
-"set helplang=cn
-"set ambiwidth=double
 
 " window
 nnoremap <C-h> <C-W>h
