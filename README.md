@@ -12,7 +12,7 @@ All done!
 
 1. In order to use all the plugins, make sure that the version of vim is 7.4+, and is compiled with python supported, say:
 
-    ./configure --with-features=huge --enable-pythoninterp --with-python-config-dir=/usr/lib/python2.7/config/
-    make && make install
+        ./configure --with-features=huge --enable-pythoninterp --with-python-config-dir=/usr/lib/python2.7/config/
+        make && make install
     
 2. An extra complile is needed for plugin `YouCompleteMe`. See <https://github.com/Valloric/YouCompleteMe#mac-os-x> for more details.
