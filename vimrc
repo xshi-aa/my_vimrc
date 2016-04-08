@@ -32,11 +32,12 @@ nnoremap <leader>r : YcmCompleter GoToReferences<CR>
 " nerdtree
 Plugin 'scrooloose/nerdtree'
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
-" <F2> NERDTree
+" <F2> Toggle NERDTree
 map <F2> :call NERDTree()<CR>
 func! NERDTree()
 	exec ":NERDTreeToggle"
 endfunc
+nnoremap <leader>f : NERDTreeFind<CR>
 
 " super search
 Plugin 'kien/ctrlp.vim'
@@ -199,11 +200,6 @@ map <F3> :call Tlist()<CR>
 func! Tlist()
 	exec ":TlistToggle"
 endfunc
-
-" open a NERDTree automatically when vim starts up
-"autocmd vimenter * NERDTree
-" open a NERDTree automatically when vim starts up if no files were specified
-"autocmd vimenter * if !argc() | NERDTree | endif
 
 " vim中命令行模式的自动匹配
 set wildmode=longest:list
