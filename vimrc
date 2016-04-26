@@ -27,7 +27,7 @@ Plugin 'vim-scripts/indentpython.vim'
 Plugin 'Valloric/YouCompleteMe'
 let g:ycm_autoclose_preview_window_after_completion=1
 nnoremap <leader>g : YcmCompleter GoTo<CR>
-nnoremap <leader>r : YcmCompleter GoToReferences<CR>
+"nnoremap <leader>r : YcmCompleter GoToReferences<CR>
 
 " nerdtree
 Plugin 'scrooloose/nerdtree'
@@ -43,7 +43,7 @@ nnoremap <leader>f : NERDTreeFind<CR>
 Plugin 'kien/ctrlp.vim'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPLastMode'
-"let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
+let g:ctrlp_max_files=0
 let g:ctrlp_extensions = ['buffertag', 'tag']
 
 " auto update tags
@@ -61,10 +61,17 @@ Plugin 'SirVer/ultisnips'
 " Snippets are separated from the engine. Add this if you want them:
 Plugin 'honza/vim-snippets'
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="/"
+let g:UltiSnipsExpandTrigger="<F5>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
+" Copy File Path
+Plugin 'vim-scripts/copypath.vim'
+nnoremap <leader>c : CopyPath<CR>
+
+" Cscope
+Plugin 'chazy/cscope_maps'
+nnoremap <leader>r :cs find s <C-R>=expand("<cword>")<CR><CR>
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -210,3 +217,11 @@ autocmd FileType * setlocal formatoptions=tcqro
 " system clipboard
 set clipboard=unnamed
 
+" Paste mode toggle
+set pastetoggle=<leader>z
+
+" Quike quit & save
+noremap <leader>q :q<cr>
+noremap <leader>x :x<cr>
+nnoremap <leader>s :w<cr>
+inoremap <leader>s <C-c>:w<cr>
