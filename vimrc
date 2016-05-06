@@ -76,6 +76,9 @@ nnoremap <leader>r :cs find s <C-R>=expand("<cword>")<CR><CR>
 " Multiple cursors
 Plugin 'terryma/vim-multiple-cursors'
 
+" Golang
+Plugin 'fatih/vim-go'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
