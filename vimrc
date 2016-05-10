@@ -227,7 +227,12 @@ set clipboard=unnamed
 set pastetoggle=<leader>z
 
 " Quike quit & save
-noremap <leader>q :q<cr>
-noremap <leader>x :x<cr>
-nnoremap <leader>s :w<cr>
-inoremap <leader>s <C-c>:w<cr>
+noremap <leader>q :q<CR>
+noremap <leader>x :x<CR>
+nnoremap <leader>s :w<CR>
+inoremap <leader>s <C-c>:w<CR>
+
+" tab navigation
+nmap <F9> :tabp<CR>
+nmap <F10> :tabn<CR>
+nmap <C-t> :tabnew<CR>
