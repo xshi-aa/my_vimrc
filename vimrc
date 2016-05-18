@@ -26,8 +26,9 @@ Plugin 'vim-scripts/indentpython.vim'
 " auto-complete
 Plugin 'Valloric/YouCompleteMe'
 let g:ycm_autoclose_preview_window_after_completion=1
+"let g:ycm_collect_identifiers_from_tags_files = 1
 nnoremap <leader>g : YcmCompleter GoTo<CR>
-"nnoremap <leader>r : YcmCompleter GoToReferences<CR>
+nnoremap K : YcmCompleter GetDoc<CR><C-W>k
 
 " nerdtree
 Plugin 'scrooloose/nerdtree'
@@ -35,7 +36,7 @@ let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 " <F2> Toggle NERDTree
 map <F2> :call NERDTree()<CR>
 func! NERDTree()
-	exec ":NERDTreeToggle"
+    exec ":NERDTreeToggle"
 endfunc
 nnoremap <leader>f : NERDTreeFind<CR>
 
@@ -45,15 +46,38 @@ let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPLastMode'
 let g:ctrlp_max_files=0
 let g:ctrlp_extensions = ['buffertag', 'tag']
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:20,results:50'
+let g:ctrlp_lazy_update = 1
 
 " auto update tags
 Plugin 'craigemery/vim-autotag'
 
 " Powerline
-Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-"set guifont=Source\ Code\ Pro\ for\ Powerline
-let g:Powerline_symbols = 'fancy'
+"Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+""set guifont=Source\ Code\ Pro\ for\ Powerline
+"let g:Powerline_symbols = 'fancy'
+"set laststatus=2
+
+" Aireline
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
 set laststatus=2
+
+" Tagbar
+Plugin 'majutsushi/tagbar'
+nnoremap <F3> :TagbarToggle<CR>
+let g:tagbar_sort = 0
+
+Plugin 'tpope/vim-fugitive'
+
+" rainbow_parentheses
+"Plugin 'kien/rainbow_parentheses.vim'
+" solarized
+"Plugin 'altercation/vim-colors-solarized'
+" molokai
+"Plugin 'tomasr/molokai'
 
 " Snip
 "Track the engine.
@@ -71,13 +95,35 @@ nnoremap <leader>c : CopyPath<CR>
 
 " Cscope
 Plugin 'chazy/cscope_maps'
-nnoremap <leader>r :cs find s <C-R>=expand("<cword>")<CR><CR>
+Plugin 'vim-scripts/cscope-quickfix'
+"Plugin 'ronakg/quickr-cscope.vim'
+"let g:quickr_cscope_keymaps = 1
+"<C-\> s: Find this C symbol
+"<C-\> g: Find this definition
+"<C-\> d: Find functions called by this function
+"<C-\> c: Find functions calling this function
+"<C-\> t: Find this text string
+"<C-\> e: Find this egrep pattern
+"<C-\> f: Find this file
+"<C-\> i: Find files #including this file
+""this" means <cword> or <cfile> on the cursor.
 
 " Multiple cursors
 Plugin 'terryma/vim-multiple-cursors'
 
 " Golang
 Plugin 'fatih/vim-go'
+
+" syntax check
+Plugin 'scrooloose/syntastic'
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+"Plugin 'kevinw/pyflakes-vim'
+
+" tab
+Plugin 'ervandew/supertab'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -143,6 +189,8 @@ nnoremap <C-h> <C-W>h
 nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
 nnoremap <C-l> <C-W>l
+nnoremap = 10<C-W>>
+nnoremap - 10<C-W><
 
 " <F1> compile
 map <F1> :call CompileRun()<CR>
@@ -151,14 +199,14 @@ func! CompileRun()
         exec ":w"
         exec "!/usr/bin/python ./%"
     elseif &filetype == 'c'
-        exec ":w" 
+        exec ":w"
         exec "!gcc % -o %<"
         exec "! ./%<"
-	elseif &filetype == 'go'
+    elseif &filetype == 'go'
         exec ":w"
         "exec "!go run ./%"
         exec "!/usr/local/go/bin/go run ./%"
-	elseif &filetype == 'sh'
+    elseif &filetype == 'sh'
         exec ":w"
         exec "!/bin/bash %"
     endif
@@ -171,48 +219,48 @@ endfunc
 
 autocmd BufNewFile *.sh,*.java,*.py,*.go exec ":call SetTitle()"
 "定义函数SetTitle，自动插入文件头
-func SetTitle()
-	"如果文件类型为.sh文件
-	if &filetype == 'sh'
-		call setline(1, "\#!/bin/bash")
-		call append(1, "\#########################################################################")
-		call append(2, "\# Author: Johnny Shi")
-		call append(3, "\# Created Time: ".strftime("%Y-%m-%d %H:%M:%S"))
-		call append(4, "\# File Name: ".expand("%"))
-		call append(5, "\# Description: ")
-		call append(6, "\#########################################################################")
-		call append(7, "")
-	elseif &filetype == 'python'
-		call setline(1, "\#!/usr/bin/env python")
-		call append(1, "\#-*- coding: utf-8 -*-")
-		call append(2, "\#########################################################################")
-		call append(3, "\# Author: Johnny Shi")
-		call append(4, "\# Created Time: ".strftime("%Y-%m-%d %H:%M:%S"))
-		call append(5, "\# File Name: ".expand("%"))
-		call append(6, "\# Description: ")
-		call append(7, "\#########################################################################")
-		call append(8, "")
-		call append(9, "\# vim: set expandtab ts=4 sts=4 sw=4 :")
-	elseif &filetype == 'go'
-		call setline(1, "\//#########################################################################")
-		call append(1, "\// Author: Johnny Shi")
-		call append(2, "\// Created Time: ".strftime("%Y-%m-%d %H:%M:%S"))
-		call append(3, "\// File Name: ".expand("%"))
-		call append(4, "\// Description: ")
-		call append(5, "\//#########################################################################")
-		call append(6, "")
-		call append(7, "\// vim: set expandtab ts=4 sts=4 sw=4 :")
-	endif
+func! SetTitle()
+    "如果文件类型为.sh文件
+    if &filetype == 'sh'
+        call setline(1, "\#!/bin/bash")
+        call append(1, "\#########################################################################")
+        call append(2, "\# Author: Johnny Shi")
+        call append(3, "\# Created Time: ".strftime("%Y-%m-%d %H:%M:%S"))
+        call append(4, "\# File Name: ".expand("%"))
+        call append(5, "\# Description: ")
+        call append(6, "\#########################################################################")
+        call append(7, "")
+    elseif &filetype == 'python'
+        call setline(1, "\#!/usr/bin/env python")
+        call append(1, "\#-*- coding: utf-8 -*-")
+        call append(2, "\#########################################################################")
+        call append(3, "\# Author: Johnny Shi")
+        call append(4, "\# Created Time: ".strftime("%Y-%m-%d %H:%M:%S"))
+        call append(5, "\# File Name: ".expand("%"))
+        call append(6, "\# Description: ")
+        call append(7, "\#########################################################################")
+        call append(8, "")
+        call append(9, "\# vim: set expandtab ts=4 sts=4 sw=4 :")
+    elseif &filetype == 'go'
+        call setline(1, "\//#########################################################################")
+        call append(1, "\// Author: Johnny Shi")
+        call append(2, "\// Created Time: ".strftime("%Y-%m-%d %H:%M:%S"))
+        call append(3, "\// File Name: ".expand("%"))
+        call append(4, "\// Description: ")
+        call append(5, "\//#########################################################################")
+        call append(6, "")
+        call append(7, "\// vim: set expandtab ts=4 sts=4 sw=4 :")
+    endif
 endfunc
 
 "**********************************************************
 
 " Tlist config
 " <F3> Tlist
-map <F3> :call Tlist()<CR>
-func! Tlist()
-	exec ":TlistToggle"
-endfunc
+"map <F3> :call Tlist()<CR>
+"func! Tlist()
+"    exec ":TlistToggle"
+"endfunc
 
 " vim中命令行模式的自动匹配
 set wildmode=longest:list
@@ -227,12 +275,17 @@ set clipboard=unnamed
 set pastetoggle=<leader>z
 
 " Quike quit & save
-noremap <leader>q :q<CR>
+"noremap <leader>q :q<CR>
 noremap <leader>x :x<CR>
-nnoremap <leader>s :w<CR>
-inoremap <leader>s <C-c>:w<CR>
+nnoremap <leader>w :w<CR>
+inoremap <leader>w <C-c>:w<CR>
 
-" tab navigation
+" tab/buffer navigation
 nmap <F9> :tabp<CR>
 nmap <F10> :tabn<CR>
 nmap <C-t> :tabnew<CR>
+nmap <F7> :bp<CR>
+nmap <F8> :bn<CR>
+nmap <leader>q :bp <BAR> bd #<CR>
+
+set t_Co=256
